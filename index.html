@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>MINISO Rewards — Join Now</title>
+<style>
+  :root{
+    --red:#E4032E;
+    --red-dark:#B8021F;
+    --ink:#1A1A1A;
+    --paper:#FAFAF8;
+    --card:#FFFFFF;
+    --line:#EDEBE6;
+    --grey:#8A8783;
+    --green:#1E8E5A;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:0 0 40px;
+  }
+  .wrap{width:100%; max-width:460px;}
+
+  .hero{
+    background:var(--red);
+    color:#fff;
+    padding:36px 24px 46px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:160px; height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    right:30px; bottom:-60px;
+    width:110px; height:110px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+  }
+  .brand{font-size:13px; letter-spacing:3px; opacity:.85; font-weight:600;}
+  .hero h1{font-size:28px; font-weight:700; margin-top:10px; line-height:1.25;}
+  .hero p{font-size:14px; opacity:.9; margin-top:8px; max-width:320px;}
+
+  .card{
+    background:var(--card);
+    margin:-26px 20px 0;
+    border-radius:var(--radius);
+    box-shadow:0 6px 24px rgba(0,0,0,0.08);
+    padding:26px 22px 24px;
+    position:relative;
+    z-index:2;
+    scroll-margin-top:20px;
+  }
+
+  .progress{display:flex; gap:6px; margin-bottom:8px;}
+  .progress span{flex:1; height:5px; border-radius:3px; background:var(--line); transition:background .3s; cursor:default;}
+  .progress span.done{background:var(--red); cursor:pointer;}
+  .progress-text{font-size:11.5px; color:var(--grey); margin-bottom:20px; text-align:right;}
+
+  .step{display:none;}
+  .step.active{display:block; animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .step-title{font-size:19px; font-weight:700; margin-bottom:4px;}
+  .step-sub{font-size:13px; color:var(--grey); margin-bottom:18px; line-height:1.5;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
+  .field label .req{color:var(--red);}
+  .field label .opt{color:var(--grey); font-weight:400; font-size:12px;}
+  .info-dot{
+    width:15px; height:15px; border-radius:50%;
+    background:var(--line); color:var(--grey);
+    font-size:10px; font-weight:700; font-style:normal;
+    display:inline-flex; align-items:center; justify-content:center;
+    cursor:help; position:relative; flex-shrink:0;
+  }
+  .info-dot .tip{
+    display:none; position:absolute; bottom:130%; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#fff; font-size:11.5px; font-weight:400;
+    padding:8px 10px; border-radius:8px; width:180px; line-height:1.4;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2); z-index:5;
+  }
+  .info-dot:hover .tip, .info-dot:active .tip{display:block;}
+
+  .field input{
+    width:100%;
+    padding:13px 14px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    font-size:16px;
+    background:#fff;
+    outline:none;
+    transition:border-color .2s, background .2s;
+    font-family:inherit;
+  }
+  .field input:focus{border-color:var(--red);}
+  .field input.valid{border-color:var(--green); background:#F5FBF8;}
+  .field input.invalid{border-color:var(--red);}
+
+  .skip-row{
+    display:flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--grey);
+    margin-top:-6px; margin-bottom:16px;
+  }
+  .skip-row input{width:17px; height:17px; accent-color:var(--red); cursor:pointer;}
+  .skip-row label{cursor:pointer;}
+
+  .consent{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:12.5px; color:var(--grey); line-height:1.5;
+    margin:6px 0 8px;
+    padding:12px; background:var(--paper); border-radius:10px;
+  }
+  .consent input{margin-top:3px; width:17px; height:17px; flex-shrink:0; accent-color:var(--red); cursor:pointer;}
+  .consent label{cursor:pointer;}
+
+  .btn-row{display:flex; gap:10px; margin-top:6px;}
+  button{
+    border:none; border-radius:10px; padding:14px 18px;
+    font-size:15px; font-weight:700; cursor:pointer;
+    font-family:inherit; transition:opacity .2s, transform .1s, background .2s;
+  }
+  .btn-primary{background:var(--red); color:#fff; flex:1;}
+  .btn-primary:active:not(:disabled){transform:scale(0.98);}
+  .btn-primary:disabled{background:#F0C4CA; cursor:not-allowed;}
+  .btn-ghost{background:transparent; color:var(--grey); border:1.5px solid var(--line); flex:0 0 auto;}
+  .btn-ghost:active{background:var(--paper);}
+
+  .error{color:var(--red); font-size:12px; margin-top:5px; display:none; align-items:center; gap:4px;}
+  .error.show{display:flex;}
+
+  .shake{animation:shake .35s;}
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px);}
+    20%,80%{transform:translateX(3px);}
+    30%,50%,70%{transform:translateX(-5px);}
+    40%,60%{transform:translateX(5px);}
+  }
+
+  .success{display:none; text-align:center; padding:20px 4px 6px;}
+  .success .tick{
+    width:64px; height:64px; border-radius:50%;
+    background:var(--green); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:30px; margin:0 auto 18px;
+    animation:pop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop{from{transform:scale(0);} to{transform:scale(1);}}
+  .success h2{font-size:20px; margin-bottom:8px;}
+  .success p{font-size:14px; color:var(--grey); line-height:1.6;}
+
+  .footer-note{
+    text-align:center; font-size:11.5px; color:var(--grey);
+    margin:18px 24px 0; line-height:1.6;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .step.active, .success .tick, .shake{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="brand">M I N I S O</div>
+    <h1>Join MINISO Rewards</h1>
+    <p>Unlock offers, birthday surprises &amp; updates — takes less than a minute.</p>
+  </div>
+
+  <div class="card" id="card">
+    <div class="progress">
+      <span class="seg done" data-seg="1" onclick="tryJump(1)"></span>
+      <span class="seg" data-seg="2" onclick="tryJump(2)"></span>
+      <span class="seg" data-seg="3" onclick="tryJump(3)"></span>
+    </div>
+    <div class="progress-text" id="progressText">Step 1 of 3</div>
+
+    <form id="rewardsForm" novalidate>
+
+      <div class="step active" data-step="1">
+        <div class="step-title">What's your name?</div>
+        <div class="step-sub">So we know who's earning the rewards 🙂</div>
+
+        <div class="field">
+          <label for="firstName">First name <span class="req">*</span></label>
+          <input type="text" id="firstName" placeholder="e.g. Ravi" autocomplete="given-name" autocapitalize="words">
+          <div class="error" id="firstNameError">⚠ Please enter your first name.</div>
+        </div>
+        <div class="field">
+          <label for="surname">Surname <span class="req">*</span></label>
+          <input type="text" id="surname" placeholder="e.g. Sharma" autocomplete="family-name" autocapitalize="words">
+          <div class="error" id="surnameError">⚠ Please enter your surname.</div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-primary" onclick="validateStep1()">Continue</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="2">
+        <div class="step-title">Your phone number</div>
+        <div class="step-sub">We'll send your welcome offer straight to WhatsApp.</div>
+
+        <div class="field">
+          <label for="phone">WhatsApp number <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="98765 43210" maxlength="11" inputmode="numeric" autocomplete="tel">
+          <div class="error" id="phoneError">⚠ Please enter a valid 10-digit mobile number.</div>
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="opt">(optional)</span></label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          <div class="error" id="emailError">⚠ That email doesn't look right.</div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-ghost" onclick="goStep(1)">Back</button>
+          <button type="button" class="btn-primary" onclick="validateStep2()">Continue</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="3">
+        <div class="step-title">A few special dates</div>
+        <div class="step-sub">So we can surprise you on the days that matter.</div>
+
+        <div class="field">
+          <label for="birthDate">Date of birth <span class="req">*</span>
+            <span class="info-dot">i<span class="tip">We'll send you a birthday treat every year 🎂</span></span>
+          </label>
+          <input type="date" id="birthDate">
+          <div class="error" id="birthDateError">⚠ Please select your date of birth.</div>
+        </div>
+        <div class="field">
+          <label for="anniversaryDate">Anniversary date <span class="opt">(optional)</span>
+            <span class="info-dot">i<span class="tip">Get an anniversary offer to celebrate with 💝</span></span>
+          </label>
+          <input type="date" id="anniversaryDate">
+        </div>
+
+        <div class="field" id="childField">
+          <label for="childBirthday">Child's birthday <span class="opt">(optional)</span></label>
+          <input type="date" id="childBirthday">
+        </div>
+        <div class="skip-row">
+          <input type="checkbox" id="noChild" onchange="toggleChildField()">
+          <label for="noChild">Not applicable / skip this</label>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="consent">
+          <label for="consent">I agree to receive offers, rewards &amp; updates from MINISO on WhatsApp and email.</label>
+        </div>
+        <div class="error" id="consentError">⚠ Please accept to continue — this is how we'll send your rewards.</div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-ghost" onclick="goStep(2)">Back</button>
+          <button type="submit" class="btn-primary" id="submitBtn">Join Rewards</button>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="success" id="successScreen">
+      <div class="tick">✓</div>
+      <h2>Welcome to MINISO Rewards!</h2>
+      <p>Thanks, <span id="successName"></span>. Your details are saved.<br>Watch WhatsApp for your first offer 🎁</p>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Your information is safe with us and used only to send you MINISO offers and rewards updates.</div>
+</div>
+
+<script>
+  const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  let maxStepReached = 1;
+
+  function showError(fieldId, show){
+    const input = document.getElementById(fieldId);
+    const err = document.getElementById(fieldId + 'Error');
+    if(err) err.classList.toggle('show', show);
+    if(input){
+      input.classList.toggle('invalid', show);
+      if(show){
+        input.classList.add('shake');
+        setTimeout(()=>input.classList.remove('shake'), 350);
+      }
+    }
+  }
+
+  function markValid(fieldId, isValid){
+    const input = document.getElementById(fieldId);
+    input.classList.toggle('valid', isValid);
+    input.classList.toggle('invalid', false);
+    const err = document.getElementById(fieldId + 'Error');
+    if(err) err.classList.remove('show');
+  }
+
+  function goStep(n){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+    document.querySelectorAll('.seg').forEach(s => {
+      s.classList.toggle('done', parseInt(s.dataset.seg) <= n);
+    });
+    document.getElementById('progressText').textContent = `Step ${n} of 3`;
+    maxStepReached = Math.max(maxStepReached, n);
+    document.getElementById('card').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(() => {
+      const firstInput = document.querySelector(`.step[data-step="${n}"] input`);
+      if(firstInput) firstInput.focus({preventScroll:true});
+    }, 200);
+  }
+
+  function tryJump(n){
+    if(n <= maxStepReached) goStep(n);
+  }
+
+  function validateStep1(){
+    const first = document.getElementById('firstName').value.trim();
+    const sur = document.getElementById('surname').value.trim();
+    let ok = true;
+    if(!first){ showError('firstName', true); ok = false; } else showError('firstName', false);
+    if(!sur){ showError('surname', true); ok = false; } else showError('surname', false);
+    if(ok) goStep(2);
+  }
+
+  document.getElementById('phone').addEventListener('input', function(e){
+    let digits = e.target.value.replace(/\D/g,'').slice(0,10);
+    let formatted = digits.length > 5 ? digits.slice(0,5) + ' ' + digits.slice(5) : digits;
+    e.target.value = formatted;
+    if(/^[6-9]\d{9}$/.test(digits)) markValid('phone', true);
+  });
+
+  document.getElementById('email').addEventListener('input', function(e){
+    const val = e.target.value.trim();
+    if(val === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) markValid('email', true);
+  });
+
+  function validateStep2(){
+    const phoneDigits = document.getElementById('phone').value.replace(/\D/g,'');
+    const email = document.getElementById('email').value.trim();
+    let ok = true;
+    if(!/^[6-9]\d{9}$/.test(phoneDigits)){ showError('phone', true); ok = false; } else showError('phone', false);
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showError('email', true); ok = false; } else showError('email', false);
+    if(ok) goStep(3);
+  }
+
+  function toggleChildField(){
+    const skip = document.getElementById('noChild').checked;
+    const field = document.getElementById('childField');
+    field.style.display = skip ? 'none' : 'block';
+    if(skip) document.getElementById('childBirthday').value = '';
+  }
+
+  ['firstName','surname'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', e=>{
+      if(e.target.value.trim()) markValid(id, true);
+    });
+  });
+
+  document.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        const step = inp.closest('.step').dataset.step;
+        if(step === '1') validateStep1();
+        else if(step === '2') validateStep2();
+        else document.getElementById('rewardsForm').requestSubmit();
+      }
+    });
+  });
+
+  document.getElementById('rewardsForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const birthDate = document.getElementById('birthDate').value;
+    const consent = document.getElementById('consent').checked;
+    let ok = true;
+    if(!birthDate){ showError('birthDate', true); ok = false; } else showError('birthDate', false);
+    if(!consent){
+      document.getElementById('consentError').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('consentError').classList.remove('show');
+    }
+    if(!ok) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    const payload = {
+      firstName: document.getElementById('firstName').value.trim(),
+      surname: document.getElementById('surname').value.trim(),
+      phone: document.getElementById('phone').value.replace(/\D/g,''),
+      email: document.getElementById('email').value.trim(),
+      birthDate: birthDate,
+      anniversaryDate: document.getElementById('anniversaryDate').value,
+      childBirthday: document.getElementById('childBirthday').value,
+      consent: consent,
+      timestamp: new Date().toISOString()
+    };
+
+    try{
+      if(SCRIPT_URL.startsWith('PASTE_')){
+        console.log('DEMO MODE — payload that would be sent to Google Sheets:', payload);
+      } else {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+      }
+
+      document.getElementById('rewardsForm').style.display = 'none';
+      document.querySelector('.progress').style.display = 'none';
+      document.getElementById('progressText').style.display = 'none';
+      document.getElementById('successName').textContent = payload.firstName;
+      document.getElementById('successScreen').style.display = 'block';
+
+    } catch(err){
+      alert('Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Join Rewards';
+    }
+  });
+</script>
+</body>
+</html>
