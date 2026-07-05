@@ -199,13 +199,13 @@
 
         <div class="field">
           <label for="firstName">First name <span class="req">*</span></label>
-          <input type="text" id="firstName" placeholder="e.g. Tushar" autocomplete="given-name" autocapitalize="words">
+          <input type="text" id="firstName" placeholder="e.g. Ravi" autocomplete="given-name" autocapitalize="words">
           <div class="error" id="firstNameError">⚠ Please enter your first name.</div>
         </div>
         <div class="field">
-          <label for="Lastname">Last name <span class="req">*</span></label>
-          <input type="text" id="Lastname" placeholder="e.g. Sharma" autocomplete="family-name" autocapitalize="words">
-          <div class="error" id="LastnameError">⚠ Please enter your surname.</div>
+          <label for="surname">Last Name <span class="req">*</span></label>
+          <input type="text" id="surname" placeholder="e.g. Sharma" autocomplete="family-name" autocapitalize="words">
+          <div class="error" id="surnameError">⚠ Please enter your last name.</div>
         </div>
 
         <div class="btn-row">
@@ -332,10 +332,10 @@
 
   function validateStep1(){
     const first = document.getElementById('firstName').value.trim();
-    const sur = document.getElementById('Lastname').value.trim();
+    const sur = document.getElementById('surname').value.trim();
     let ok = true;
     if(!first){ showError('firstName', true); ok = false; } else showError('firstName', false);
-    if(!sur){ showError('Lastname', true); ok = false; } else showError('Lastname', false);
+    if(!sur){ showError('surname', true); ok = false; } else showError('surname', false);
     if(ok) goStep(2);
   }
 
@@ -367,7 +367,7 @@
     if(skip) document.getElementById('childBirthday').value = '';
   }
 
-  ['firstName','Lastname'].forEach(id=>{
+  ['firstName','surname'].forEach(id=>{
     document.getElementById(id).addEventListener('input', e=>{
       if(e.target.value.trim()) markValid(id, true);
     });
@@ -406,7 +406,7 @@
 
     const payload = {
       firstName: document.getElementById('firstName').value.trim(),
-      Lastname: document.getElementById('Lastname').value.trim(),
+      surname: document.getElementById('surname').value.trim(),
       phone: document.getElementById('phone').value.replace(/\D/g,''),
       email: document.getElementById('email').value.trim(),
       birthDate: birthDate,
